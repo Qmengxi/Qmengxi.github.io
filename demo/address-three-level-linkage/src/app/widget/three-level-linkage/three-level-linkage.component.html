@@ -1,0 +1,14 @@
+<form [formGroup]="form">
+    <select formControlName="province" (change)="provinceChange()">
+        <option value="-1" disabled>--请选择--</option>
+        <option *ngFor="let province of provinceData" [ngValue]="province">{{ province.name }}</option>
+    </select>
+    <select formControlName="city" (change)="cityChange()">
+        <option value="-1" disabled>--请选择--</option>
+        <option *ngFor="let city of cityData" [ngValue]="city">{{ city.name }}</option>
+    </select>
+    <select formControlName="county" (change)="countyChange()">
+        <option value="-1" disabled>--请选择--</option>
+        <option *ngFor="let county of countyData" [ngValue]="county">{{ county.name }}</option>
+    </select>
+</form>

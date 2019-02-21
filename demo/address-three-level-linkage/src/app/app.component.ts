@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
     title = 'address-three-level-linkage';
+
+    receiveAreaInfo(event){
+        //处理数据
+        console.log(event);
+    }
 }
