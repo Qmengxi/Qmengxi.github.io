@@ -349,6 +349,14 @@ drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 // y	在画布上放置图像的 y 坐标位置。
 // width	可选。要使用的图像的宽度。（伸展或缩小图像）
 // height	可选。要使用的图像的高度。（伸展或缩小图像）
+
+//eg:
+//let img = document.createElement('img');
+let img = new Image();
+img.src = '/img-path.png';
+img.onload = function(){
+    ctx.drawImage(img,0,0);
+}
  ```
 
 ### 8.像素操作
