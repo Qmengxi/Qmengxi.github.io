@@ -223,7 +223,7 @@ ctx.bezierCurveTo(20,100,200,100,200,20);
 //startAngule: 起始角度
 //endAngule: 结束角度
 //counterclockwise：逆时针绘制  false:顺时针  true:逆时针
-context.arc(100,100,30,0,1/2*Math.PI,false);
+ctx.arc(100,100,30,0,1/2*Math.PI,false);
 
 //arcTo(x1,y1,x2,y2,r)   !!不太懂
 //x1,y1弧起点
@@ -250,17 +250,17 @@ context.arc(100,100,30,0,1/2*Math.PI,false);
 ```javascript
 //缩放绘图，对缩放命令后的绘图会有缩放影响，对之前的绘图没有影响。
 //缩放命令后再次执行缩放，会在上次缩放的基础上进行缩放。
-scale(scaleWidth,scaleHeight)
-scale(2,2)//x,y各缩放2倍
-scale(2,2)//x,y再各缩放2倍，实际相对最初缩放4倍
+ctx.scale(scaleWidth,scaleHeight)
+ctx.scale(2,2)//x,y各缩放2倍
+ctx.scale(2,2)//x,y再各缩放2倍，实际相对最初缩放4倍
 
 //旋转绘图，旋转原点为画布的(0,0)点
-rotate(angle)
+ctx.rotate(angle)
 //旋转角度以弧度计。
 //弧度计算公式：degrees*Math.PI/180
 
 //移动画布,重新映射画布上的 (0,0) 位置。
-translate(x,y)
+ctx.translate(x,y)
 
 //transform(a,b,c,d,e,f,g),缩放、旋转、移动并倾斜当前的环境。   ！！ 不懂
 //该变换只会影响 transform() 方法调用之后的绘图，多次调用，以上次调用的为基础进行变换
@@ -299,11 +299,11 @@ translate图解：
 
 ```javascript
 //font 具有与css font相同的属性，可设置font-style，font-variant,font-weight,font-size,line-height,font-family 等
-font = "40px Arial"
+ctx.font = "40px Arial"
 
 //textAlign 置或返回文本内容的当前对齐方式
 //配合使用fillText()，strokeText()方法
-textAlign = "center | start | end | left | right "
+ctx.textAlign = "center | start | end | left | right "
 //start	  默认。文本在指定的位置开始。
 //end	  文本在指定的位置结束。
 //center  文本的中心被放置在指定的位置。
@@ -332,13 +332,13 @@ ctx.fillText("textAlign=right",150,140);
 
  ```javascript
 //在画布上定位图像
-drawImage(img,x,y);
+ctx.drawImage(img,x,y);
 
 //在画布上定位图像，并规定图像的宽度和高度
-drawImage(img,x,y,width,height)
+ctx.drawImage(img,x,y,width,height)
 
 //剪切图像，并在画布上定位被剪切的部分：
-drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 
 // img	规定要使用的图像、画布或视频。
 // sx	可选。开始剪切的 x 坐标位置。
@@ -385,15 +385,15 @@ img.onload = function(){
 */
 
 //指定尺寸，创建存的ImageData对象
-createImageData(width,height);
+ctx.createImageData(width,height);
 //创建一个与指定的另一个ImageData对象尺寸相同的新ImageData对象（不会复制图像数据）
-createImageData(imageData);
+ctx.createImageData(imageData);
 
 
 //getImageData() 复制画布上指定矩形的像素数据
 //putImageData() 将图像数据放置画布上
 
-getImageData(x,y,width,height)
+ctx.getImageData(x,y,width,height)
 ```
 
 ### 9.合成
