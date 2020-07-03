@@ -57,7 +57,7 @@ yarn create nuxt-app <项目名>
    3.  Lint staged files
    4.  StyleLint 
 10. 选择测试工具
-    1. None (随意添加一个)
+    1. None
     2. [Jest](https://github.com/facebook/jest)
     3. [AVA](https://github.com/avajs/ava)
 11. 选择渲染模式
@@ -109,6 +109,24 @@ export default {
   }
 }
 ```
+
+## 配置公共样式
+
+引入公共样式
+
+```js
+// nuxt.config.js
+css:[
+    'assets/css/common.css',  //css配置方案
+    {
+        src:'assets/less/common.less',    // less、sass等配置方案
+        lang:'less'
+    }
+]
+
+```
+
+
 
 # 配置axios
 
@@ -225,7 +243,7 @@ class ApiService {
 export default new ApiService()
 ```
 
-在`plugins`新建`main.js` 用于全局处理请求
+在`plugins`新建`services.js` 用于全局处理请求
 
 ```js
 //main.js
@@ -253,7 +271,7 @@ export default ({ app }, inject) => {
 //nuxt.config.js
 plugins: [
     {
-        src: '~/plugins/main',
+        src: '~/plugins/services',
         ssr: true
     }
 ],
@@ -305,19 +323,9 @@ created生命周期里请求跑在服务端，那么superagent 内部是用的no
 
 需要改下生命周期就行了，在created里请求数据，改为mounted里去请求
 
-# 配置路由
-
-
-
-
-
-
-
-
-
-
-
 # 配置国际化 nuxt-i18n
+
+[文档看这里](https://nuxt-community.github.io/nuxt-i18n/)
 
 ## 安装
 
@@ -470,33 +478,7 @@ export default ({ app }) => {
 
 
 
-
-
-添加中间件lang.js,切换语言时，更新store中的语言类型
-
-```js
-//lang.js
-import getCookie from '@/config/get-cookie'
- 
-export default function ({store, route, redirect, req}) {
-  const {lang} = getCookie(req)
-  if (lang) {
-    store.commit('setLang', lang)
-  }
-}
-```
-
-store中添加mutation
-
-```js
-setLang(state, lang) {
-    state.lang = lang
-}
-```
-
-
-
-## 路由
+## 路由国际化
 
 ### 四种路由方案
 
@@ -594,25 +576,200 @@ pages对象中的每个键对应于 `/pages`目录中的完整文件路径
 
 # 配置SEO
 
+结合nuxt-i18n，配置多语言seo
 
+```js
+// vue文件中
+export default {
+  head () {
+    const i18nSeo = this.$nuxtI18nSeo()
+    return {
+      htmlAttrs: {
+        myAttribute: 'My Title',
+        ...i18nSeo.htmlAttrs
+      },
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'My Custom Description'
+        },
+        ...i18nSeo.meta
+      ],
+      link: [
+        {
+          hid: 'apple-touch-icon',
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png'
+        },
+        ...i18nSeo.link
+     ]
+    }
+  }
+}
+
+// 可以通过$t()配置不同语言版本seo关键词及描述
+```
+
+# 配置路由
+
+[文档看这里](https://nuxtjs.org/guide/routing)  ,  [中文看这里](https://zh.nuxtjs.org/guide/routing)
+
+## 路由跳转
+
+```html
+<template>
+  <nuxt-link to="/">Home page</nuxt-link>
+</template>
+```
+
+**nuxt路由没有配置文件，根据pages下文件目录生成路由**
+
+## 基础路由
+
+```shell
+pages/
+--| user/
+-----| index.vue
+-----| one.vue
+--| index.vue
+```
+
+路由结果
+
+```js
+router: {
+  routes: [
+    {
+      name: 'index',
+      path: '/',
+      component: 'pages/index.vue'
+    },
+    {
+      name: 'user',
+      path: '/user',
+      component: 'pages/user/index.vue'
+    },
+    {
+      name: 'user-one',
+      path: '/user/one',
+      component: 'pages/user/one.vue'
+    }
+  ]
+}
+```
+
+## 动态路由
+
+```shell
+pages/
+--| users/
+-----| index.vue
+-----| _id.vue
+--| _slug/
+-----| comments.vue
+-----| index.vue
+--| index.vue
+```
+
+路由结果
+
+```js
+router: {
+  routes: [
+    {
+      name: 'index',
+      path: '/',
+      component: 'pages/index.vue'
+    },
+    {
+      name: 'users',
+      path: '/users',
+      component: 'pages/users/_id.vue'
+    },
+    {
+      name: 'users-id',
+      path: '/users/:id?',
+      component: 'pages/users/_id.vue'
+    },
+    {
+      name: 'slug',
+      path: '/:slug',
+      component: 'pages/_slug/index.vue'
+    },
+    {
+      name: 'slug-comments',
+      path: '/:slug/comments',
+      component: 'pages/_slug/comments.vue'
+    }
+  ]
+}
+```
+
+## 嵌套路由
+
+子组件在父元素得到`<nuxt-child/>`中显示
+
+```shell
+pages/
+--| users/
+-----| _id.vue
+-----| index.vue
+--| users.vue
+```
+
+路由结果
+
+```js
+router: {
+  routes: [
+    {
+      path: '/users',
+      component: 'pages/users.vue',
+      children: [
+        {
+          path: '',
+          component: 'pages/users/index.vue',
+          name: 'users'
+        },
+        {
+          path: ':id',
+          component: 'pages/users/_id.vue',
+          name: 'users-id'
+        }
+      ]
+    }
+  ]
+}
+```
 
 # 打包、部署
 
+[文档看这里](https://nuxtjs.org/guide/commands)  ， [中文看这里](https://zh.nuxtjs.org/guide/commands)
+
+两种部署模式：服务端渲染应用部署，静态页面部署
+
+## 服务端渲染应用部署
+
+> 需要在服务器端安装node
+
+```shell
+nuxt build  # 编译构建
+nuxt start # 启动应用
+```
 
 
 
+## 静态应用部署
 
+根据路由配置，将应用静态化
 
+```shell
+# Nuxt >= v2.13:
+nuxt build && nuxt export
 
-
-
-
-
-
-
-参考：
-
-https://blog.csdn.net/weixin_43731904/article/details/84892770
-
-https://www.cnblogs.com/goloving/p/11440967.html
+# Nuxt <= v2.12:
+nuxt generate
+```
 
