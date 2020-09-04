@@ -163,7 +163,7 @@ Dom把整个网页映射为一个多层节点结构。这些节点包含着不�
 2. 新增了验证文档的方法——在**DOM验证模块**中实现（DOM Validation）
 3. 对DOM核心进行拓展，开始支持XML1.0规范，设计XML Infoset、Xpath和XML Base。
 
-####其他DOM标准
+#### 其他DOM标准
 
 1. SVG 1.0（Scalable Vector Graphic,可伸缩矢量图）
 2. MathML 1.0 (Mathematical Markup Langulage,数学标记语言)
